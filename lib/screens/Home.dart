@@ -1,12 +1,19 @@
+import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:elastic_client/elastic_client.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meme_tastic/services/SearchService.dart';
+import 'package:share/share.dart';
+import 'package:http/http.dart' as http;
+import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 class MyHomePage extends StatefulWidget {
 
@@ -124,7 +131,28 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             IconButton(
                 icon: Icon(Icons.share_rounded),
-                onPressed: () {}
+                onPressed: () async {
+                  if (widget.url == "") {
+                    Fluttertoast.showToast(
+                      msg: "Oops :(, please load a meme first",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                    );
+                  } else {
+                    http.Response response = await http.get(
+                      Uri.parse(widget.url),);
+
+                    await
+                    WcFlutterShare.share(
+                      sharePopupTitle: 'Share with?',
+                      subject: 'MemeTastic',
+                      text: 'Hey, checkout this meme from reddit',
+                      fileName: 'share.png',
+                      mimeType: 'image/png',
+                      bytesOfFile: response.bodyBytes,
+                    );
+                  }
+                }
                 ),
             IconButton(icon: Icon(Icons.navigate_next), onPressed: () {
               getURL();
