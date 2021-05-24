@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:elastic_client/elastic_client.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meme_tastic/services/SearchService.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -62,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Icon(Icons.search_rounded),
+            child: IconButton(icon: Icon(Icons.search_rounded), onPressed: _showSearch,)
           )
         ],
         iconTheme: IconThemeData(
@@ -125,6 +126,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+
+  }
+  Future<void> _showSearch() async {
+    await showSearch(
+      context: context,
+      delegate: SearchService(),
+      query: "",
     );
   }
 }
