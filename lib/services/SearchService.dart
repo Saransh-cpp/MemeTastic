@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:elastic_client/elastic_client.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:meme_tastic/screens/Home.dart';
 
 
 class SearchService extends SearchDelegate {
@@ -15,7 +16,6 @@ class SearchService extends SearchDelegate {
         icon: Icon(Icons.clear),
         onPressed: () {
           query = '';
-          // await searchElasticServer(query);
         },
       ),
     ];
@@ -39,7 +39,7 @@ class SearchService extends SearchDelegate {
           if (!snapshot.hasData) {
             return SvgPicture.asset('assets/undraw_searching_p5ux.svg');
           }
-          return displayMemeTile(snapshot.data);
+          return displayMemeTile(snapshot.data, context);
         }
     );
   }
@@ -54,36 +54,21 @@ class SearchService extends SearchDelegate {
           return SvgPicture.asset('assets/undraw_searching_p5ux.svg');
         }
 
-        if (snapshot.data == false) {
-          return SvgPicture.asset('assets/undraw_searching_p5ux.svg');
-        }
-        return displayMemeTile(snapshot.data);
+        return displayMemeTile(snapshot.data, context);
       },
     );
   }
 
-  Widget displayMemeTile(List memes) {
+  Widget displayMemeTile(List memes, BuildContext context) {
     return ListView.builder(
         itemCount: memes.length,
         itemBuilder: (BuildContext _, int index)
     {
       return ListTile(
-        leading: CachedNetworkImage(
-          imageUrl: memes[index][1],
-          placeholder: (context, url) {
-            print(url);
-            return Center(
-              child: Container(
-                  height: 40,
-                  width: 40,
-                  child: SpinKitSquareCircle(
-                    color: Colors.purple[500],
-                  )),
-            );
-          },
-          errorWidget: (context, url, error) =>
-              SvgPicture.asset('assets/undraw_page_not_found_su7k.svg'),
-        ),
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) => MyHomePage(url: memes[index][1], isLoading: true,)));
+        },
         title: Text(memes[index][0]),
       );
     });
@@ -110,7 +95,7 @@ class SearchService extends SearchDelegate {
     await transport.close();
 
     if(result.totalCount <= 0 )
-      return false;
+      return null;
     else
       return memes;
   }

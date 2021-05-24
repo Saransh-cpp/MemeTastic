@@ -9,15 +9,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meme_tastic/services/SearchService.dart';
 
 class MyHomePage extends StatefulWidget {
+
+  String url;
+  bool isLoading;
+
+  MyHomePage({Key key, this.url, this.isLoading}) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  String memeUrl = "";
+  // String memeUrl = "";
   String memeTitle = "";
-  bool isLoading = false;
+  // bool isLoading = false;
 
   Future getURL() async {
     final transport = HttpTransport(
@@ -44,8 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
     int memeNum = random.nextInt(50);
 
     setState(() {
-      memeUrl = memes[memeNum][1];
-      isLoading = true;
+      widget.url = memes[memeNum][1];
+      widget.isLoading = true;
     });
   }
 
@@ -63,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: IconButton(icon: Icon(Icons.search_rounded), onPressed: _showSearch,)
+            child: IconButton(icon: Icon(Icons.search_rounded), onPressed: () {searchScreen();},)
           )
         ],
         iconTheme: IconThemeData(
@@ -77,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            isLoading ? CachedNetworkImage(
+            widget.isLoading ? CachedNetworkImage(
               width: MediaQuery
                   .of(context)
                   .size
@@ -86,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   .of(context)
                   .size
                   .height * 0.6,
-              imageUrl: memeUrl,
+              imageUrl: widget.url,
               placeholder: (context, url) {
                 print(url);
                 return Center(
@@ -129,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
   }
-  Future<void> _showSearch() async {
+  Future<void> searchScreen() async {
     await showSearch(
       context: context,
       delegate: SearchService(),

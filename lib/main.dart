@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MemeTastic',
-      home: MyHomePage(),
+      home: MyHomePage(url: "", isLoading: false,),
     );
   }
 }
