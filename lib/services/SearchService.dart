@@ -1,5 +1,6 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:elastic_client/elastic_client.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -8,6 +9,31 @@ import 'package:meme_tastic/screens/Home.dart';
 
 
 class SearchService extends SearchDelegate {
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return theme.copyWith(
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        color: Colors.white
+      ),
+      primaryColor: Colors.white,
+      primaryIconTheme: IconThemeData(
+        color: Colors.black
+      ),
+      // primaryColorBrightness: Brightness.dark,
+      primaryTextTheme: theme.primaryTextTheme,
+      inputDecorationTheme: const InputDecorationTheme(
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+        ),
+      ),
+    );
+  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
