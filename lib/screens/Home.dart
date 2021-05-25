@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meme_tastic/services/SearchService.dart';
 import 'package:share/share.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -31,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // String memeUrl = "";
   String memeTitle = "";
   // bool isLoading = false;
+  Color color = const Color(0xffBFD1FD);
 
   Future getURL() async {
     final transport = HttpTransport(
@@ -83,7 +85,82 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                child: Center(
+                  child: Image.asset('assets/Icon.png'),
+                ),
+              ),
+              Text(
+                'MemeTastic',
+                style: TextStyle(
+                  fontSize: 25
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 20, 8, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: color,
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                  // padding: const EdgeInsets.all(5.0),
+                  child: ListTile(
+                    leading: Container(
+                      width: 40,
+                        child: SvgPicture.asset('assets/github-big-logo.svg')),
+                    title: Text(
+                      'GitHub - Frontend',
+                      style: TextStyle(
+                        fontSize: 17
+                      ),
+                    ),
+                    trailing: Icon(
+                      Icons.navigate_next
+                    ),
+                    onTap: () {
+                      launchURL('https://github.com/Saransh-cpp');
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 20, 8, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: color,
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                  // padding: const EdgeInsets.all(5.0),
+                  child: ListTile(
+                    leading: Container(
+                      width: 40,
+                        child: SvgPicture.asset('assets/github-big-logo.svg')),
+                    title: Text(
+                      'GitHub - Backend',
+                      style: TextStyle(
+                          fontSize: 17
+                      ),
+                    ),
+                    trailing: Icon(
+                        Icons.navigate_next
+                    ),
+                    onTap: () {
+                      launchURL('https://github.com/Saransh-cpp/MemeTastic-backend');
+                    },
+                  ),
+                ),
+              )
+
+            ],
+          ),
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -132,9 +209,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () async {
                   if (widget.url == "") {
                     Fluttertoast.showToast(
-                      msg: "Oops :(, please load a meme first",
+                      msg: "Oops :( Please load a meme first",
                       toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
+                      gravity: ToastGravity.BOTTOM,
                     );
                   } else {
                     if (widget.url.substring(widget.url.length - 3) == 'png' || widget.url.substring(widget.url.length - 3) == 'jpg') {
@@ -170,5 +247,9 @@ class _MyHomePageState extends State<MyHomePage> {
       delegate: SearchService(),
       query: "",
     );
+  }
+
+  void launchURL(String s) async {
+    await canLaunch(s) ? await launch(s) : Fluttertoast.showToast(msg: "Oops:( Something went wrong", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
   }
 }
