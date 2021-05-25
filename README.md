@@ -1,6 +1,14 @@
-# meme_tastic
+# MemeTastic
 
-A new Flutter application.
+Frontend for Elasticsearch X Code for Cause Hackathon.
+
+## How it works
+
+- The app pull latest memes from my `elasticsearch` server hosted on cloud and displays them.
+
+- It also utilises the search capabilities using `ngrams` to search for any meme.
+ 
+- You can also share the memes;).
 
 ## Getting Started
 
