@@ -53,6 +53,7 @@ class SearchService extends SearchDelegate {
         icon: AnimatedIcon(
             icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
         onPressed: () {
+          FocusScope.of(context).unfocus();
           close(context, null);
         });
   }
@@ -92,6 +93,7 @@ class SearchService extends SearchDelegate {
     {
       return ListTile(
         onTap: () {
+          FocusScope.of(context).unfocus();
           Navigator.of(context).pop();
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) => MyHomePage(url: memes[index][1], isLoading: true,)));
         },
