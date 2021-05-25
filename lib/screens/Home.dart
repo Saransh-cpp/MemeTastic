@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Icons.navigate_next
                     ),
                     onTap: () {
-                      launchURL('https://github.com/Saransh-cpp');
+                      launchURL('https://github.com/Saransh-cpp/MemeTastic');
                     },
                   ),
                 ),
