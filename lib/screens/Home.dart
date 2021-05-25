@@ -39,8 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final title = await client.search(
       index: 'dankmemes',
       limit: 50,
-      // query: Query.term('url', [
-      //   ]),
         source: true,
         trackTotalHits: true
     );
@@ -139,18 +137,21 @@ class _MyHomePageState extends State<MyHomePage> {
                       gravity: ToastGravity.CENTER,
                     );
                   } else {
-                    http.Response response = await http.get(
-                      Uri.parse(widget.url),);
-
-                    await
-                    WcFlutterShare.share(
-                      sharePopupTitle: 'Share with?',
-                      subject: 'MemeTastic',
-                      text: 'Hey, checkout this meme from reddit',
-                      fileName: 'share.png',
-                      mimeType: 'image/png',
-                      bytesOfFile: response.bodyBytes,
-                    );
+                    if (widget.url.substring(widget.url.length - 3) == 'png' || widget.url.substring(widget.url.length - 3) == 'jpg') {
+                      http.Response response = await http.get(
+                        Uri.parse(widget.url),);
+                      await
+                      WcFlutterShare.share(
+                        sharePopupTitle: 'Share with?',
+                        subject: 'MemeTastic',
+                        text: 'Hey, checkout this meme from reddit',
+                        fileName: 'meme.png',
+                        mimeType: 'image/png',
+                        bytesOfFile: response.bodyBytes,
+                      );
+                    } else {
+                      Share.share("Hey, checkout this meme from reddit - ${widget.url}");
+                    }
                   }
                 }
                 ),
