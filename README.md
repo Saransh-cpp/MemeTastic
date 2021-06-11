@@ -1,6 +1,6 @@
 # MemeTastic
 
-Frontend for Elasticsearch X Code for Cause Hackathon.
+Frontend for Elasticsearch X Code for Cause Hackathon. (Winner for the hackthon - [devpost project](https://devpost.com/software/memetastic))
 
 ## How it works
 
